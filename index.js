@@ -35,7 +35,7 @@ app.listen(port, () => {
 }
 
 
-// TEST: Endpoint to retrieve all raw materials
+// Endpoint to retrieve all raw materials
 app.get('/raw_materials', (req, res) => {
   db.query('SELECT * FROM raw_materials', (err, results) => {
       if (err) {
@@ -46,7 +46,7 @@ app.get('/raw_materials', (req, res) => {
   });
 });
 
-// TEST: Endpoint to retrieve all colonies
+// Endpoint to retrieve all colonies
 app.get('/colonies', (req, res) => {
   db.query('SELECT * FROM colonies', (err, results) => {
       if (err) {
@@ -57,7 +57,7 @@ app.get('/colonies', (req, res) => {
   });
 });
 
-// TEST: Endpoint to retrieve material_availability table
+// Endpoint to retrieve material_availability table
 app.get('/material_availability', (req, res) => {
   db.query('SELECT * FROM  material_availability', (err, results) => {
       if (err) {
@@ -68,6 +68,7 @@ app.get('/material_availability', (req, res) => {
   });
 });
 
+// Endpoint to retrieve raw materials by id
 app.get('/raw_materials/:id', (req, res) => {
   const raw_material_id = req.params.id
   db.query('SELECT * FROM raw_materials WHERE material_id = ?', [raw_material_id], (err, results) => {
@@ -84,7 +85,7 @@ app.get('/raw_materials/:id', (req, res) => {
   })
 })
 
-// TEST: Endpoint to retrieve specific colonies by ID 
+// Endpoint to retrieve colonies by ID 
 app.get('/colonies/:id', (req, res) => {
   const colonyId = req.params.id
   db.query('SELECT * FROM colonies WHERE colony_id = ?', [colonyId], (err, results) => {
@@ -101,8 +102,9 @@ app.get('/colonies/:id', (req, res) => {
   })
 })
 
-// TEST: Endpoint to retrieve all of the material availability table.
-// This shows which colonies have which raw_materials 
+// Endpoint to retrieve material availability table entries by colony and material id
+
+
 app.get('/material_availability/:material_id/:colony_id', (req, res) => {
   const materialId = req.params.material_id;
   const colonyId = req.params.colony_id;

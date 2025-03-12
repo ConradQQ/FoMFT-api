@@ -41,7 +41,6 @@ describe('GET /material_availability/:material_id/:colony_id', () => {
       expect(res.statusCode).toBe(404);
       expect(res.body).toEqual({message: 'Material availability record not found'});
         
-          
       });
 
     it('should return code 404 and Material availability record not found', async () => {
