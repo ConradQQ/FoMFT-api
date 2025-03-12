@@ -14,7 +14,7 @@ const db = mysql.createConnection({
 host: process.env.DB_HOST,
 user: process.env.DB_USER,
 password: process.env.DB_PASSWORD,
-database: process.env.DB_DATABASE
+database: process.env.DB_DATABASE 
 
 });
 
@@ -34,7 +34,6 @@ app.listen(port, () => {
 });
 }
 
-module.exports = app;
 
 // TEST: Endpoint to retrieve all raw materials
 app.get('/raw_materials', (req, res) => {
@@ -68,6 +67,22 @@ app.get('/material_availability', (req, res) => {
       }
   });
 });
+
+app.get('/raw_materials/:id', (req, res) => {
+  const raw_material_id = req.params.id
+  db.query('SELECT * FROM raw_materials WHERE material_id = ?', [raw_material_id], (err, results) => {
+    if (err) {
+      res.status(500).json({ error: err.message});
+    } else {
+      if (results.length > 0) {
+        res.json(results)
+      } else {
+        res.status(404).json({message: 'Raw Material not found'})
+      }
+      
+    } 
+  })
+})
 
 // TEST: Endpoint to retrieve specific colonies by ID 
 app.get('/colonies/:id', (req, res) => {
@@ -104,5 +119,7 @@ app.get('/material_availability/:material_id/:colony_id', (req, res) => {
   });
 });
 
+
+module.exports = {app, db};
 
 
