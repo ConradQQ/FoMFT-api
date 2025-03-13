@@ -28,10 +28,12 @@ db.connect((err) => {
 
 })
 
-if (process.env.NODE_ENV !== 'test'){
+if (process.env.NODE_ENV !== 'test') {
+  
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
 });
+
 }
 
 
@@ -81,9 +83,9 @@ app.get('/raw_materials/:id', (req, res) => {
         res.status(404).json({message: 'Raw Material not found'})
       }
       
-    } 
-  })
-})
+    }
+  });
+});
 
 // Endpoint to retrieve colonies by ID 
 app.get('/colonies/:id', (req, res) => {
@@ -99,12 +101,10 @@ app.get('/colonies/:id', (req, res) => {
       }
       
     } 
-  })
-})
+  });
+});
 
 // Endpoint to retrieve material availability table entries by colony and material id
-
-
 app.get('/material_availability/:material_id/:colony_id', (req, res) => {
   const materialId = req.params.material_id;
   const colonyId = req.params.colony_id;
