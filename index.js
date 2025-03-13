@@ -44,31 +44,14 @@ app.listen(port, () => {
 
 
 
+// 
+// raw_materials endpoints
+// 
+
+
 // Endpoint to retrieve all raw materials
 app.get('/raw_materials', (req, res) => {
   db.query('SELECT * FROM raw_materials', (err, results) => {
-      if (err) {
-          res.status(500).json({ error: err.message });
-      } else {
-          res.json(results);
-      }
-  });
-});
-
-// Endpoint to retrieve all colonies
-app.get('/colonies', (req, res) => {
-  db.query('SELECT * FROM colonies', (err, results) => {
-      if (err) {
-          res.status(500).json({ error: err.message });
-      } else {
-          res.json(results);
-      }
-  });
-});
-
-// Endpoint to retrieve material_availability table
-app.get('/material_availability', (req, res) => {
-  db.query('SELECT * FROM  material_availability', (err, results) => {
       if (err) {
           res.status(500).json({ error: err.message });
       } else {
@@ -94,6 +77,23 @@ app.get('/raw_materials/:id', (req, res) => {
   });
 });
 
+
+// 
+// colonies endpoints
+// 
+
+
+// Endpoint to retrieve all colonies
+app.get('/colonies', (req, res) => {
+  db.query('SELECT * FROM colonies', (err, results) => {
+      if (err) {
+          res.status(500).json({ error: err.message });
+      } else {
+          res.json(results);
+      }
+  });
+});
+
 // Endpoint to retrieve colonies by ID 
 app.get('/colonies/:id', (req, res) => {
   const colonyId = req.params.id
@@ -108,6 +108,23 @@ app.get('/colonies/:id', (req, res) => {
       }
       
     } 
+  });
+});
+
+
+// 
+// material_availability endpoints
+// 
+
+
+// Endpoint to retrieve material_availability table
+app.get('/material_availability', (req, res) => {
+  db.query('SELECT * FROM  material_availability', (err, results) => {
+      if (err) {
+          res.status(500).json({ error: err.message });
+      } else {
+          res.json(results);
+      }
   });
 });
 
@@ -128,7 +145,11 @@ app.get('/material_availability/:material_id/:colony_id', (req, res) => {
   });
 });
 
-// Endpoint to retrieve all production cmponent
+// 
+// production_components endpoints
+// 
+
+// Endpoint to retrieve all production component
 app.get('/production_components', (req, res) => {
   db.query('SELECT * FROM production_components', (err, results) => {
       if (err) {
@@ -156,6 +177,38 @@ app.get('/production_components/:id', (req, res) => {
   });
 });
 
+// 
+// armor endpoints
+// 
+
+
+// Endpoint to retrieve all armor pieces
+app.get('/armor', (req, res) => {
+  db.query('SELECT * FROM  armor', (err, results) => {
+      if (err) {
+          res.status(500).json({ error: err.message });
+      } else {
+          res.json(results);
+      }
+  });
+});
+
+// Endpoint to retrieve an armor piece by id
+app.get('/armor/:id', (req, res) => {
+  const armor_id = req.params.id
+  db.query('SELECT * FROM armor WHERE armor_id = ?', [armor_id], (err, results) => {
+    if (err) {
+      res.status(500).json({ error: err.message});
+    } else {
+      if (results.length > 0) {
+        res.json(results)
+      } else {
+        res.status(404).json({message: 'Armor piece not found'})
+      }
+      
+    } 
+  });
+});
 
 module.exports = {app, db};
 
