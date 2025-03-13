@@ -121,6 +121,34 @@ app.get('/material_availability/:material_id/:colony_id', (req, res) => {
   });
 });
 
+// Endpoint to retrieve all production cmponent
+app.get('/production_components', (req, res) => {
+  db.query('SELECT * FROM production_components', (err, results) => {
+      if (err) {
+          res.status(500).json({ error: err.message });
+      } else {
+          res.json(results);
+      }
+  });
+});
+
+// Endpoint to retrieve a specific production component
+app.get('/production_components/:id', (req, res) => {
+  const component_id = req.params.id
+  db.query('SELECT * FROM production_components WHERE component_id = ?', [component_id], (err, results) => {
+    if (err) {
+      res.status(500).json({ error: err.message});
+    } else {
+      if (results.length > 0) {
+        res.json(results)
+      } else {
+        res.status(404).json({message: 'Production component not found'})
+      }
+      
+    }
+  });
+});
+
 
 module.exports = {app, db};
 
