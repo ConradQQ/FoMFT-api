@@ -37,6 +37,13 @@ app.listen(port, () => {
 }
 
 
+
+// 
+// API Endpoints
+// 
+
+
+
 // Endpoint to retrieve all raw materials
 app.get('/raw_materials', (req, res) => {
   db.query('SELECT * FROM raw_materials', (err, results) => {
