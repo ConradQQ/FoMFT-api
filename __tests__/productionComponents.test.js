@@ -40,7 +40,7 @@ it('should return the correct data for a specific production component of id 23'
   expect(res.body[0].component_name).toBe('Deuterium Water'); 
 });
 
-  it('should return the correct data for a specific production component of id 23', async () => {
+it('should return production component not found', async () => {
     const res = await request(server).get('/production_components/99');
     expect(res.statusCode).toBe(404);
     expect(res.body).toEqual({message: 'Production component not found'}); 
