@@ -201,9 +201,60 @@ app.get('/armor/:id', (req, res) => {
       res.status(500).json({ error: err.message});
     } else {
       if (results.length > 0) {
-        res.json(results)
+        res.json(results);
       } else {
-        res.status(404).json({message: 'Armor piece not found'})
+        res.status(404).json({message: 'Armor piece not found'});
+      }
+      
+    } 
+  });
+});
+
+
+
+// 
+// Weapons endpoints
+// 
+
+// Endpoint to retrieve all weapons
+app.get('/weapons', (req, res) => {
+  db.query('SELECT * FROM  weapons', (err, results) => {
+      if (err) {
+          res.status(500).json({ error: err.message });
+      } else {
+          res.json(results);
+      }
+  });
+});
+
+// Endpoint to retrieve an weapon by type
+app.get('/weapons/:id', (req, res) => {
+  const weapon_id = req.params.id
+  db.query('SELECT * FROM weapons WHERE weapon_id = ?', [weapon_id], (err, results) => {
+    if (err) {
+      res.status(500).json({ error: err.message});
+    } else {
+      if (results.length > 0) {
+        res.json(results);
+      } else {
+        res.status(404).json({message: 'Weapon not found'});
+      }
+      
+    } 
+  });
+});
+
+// Endpoint to retrieve a weapon by type
+app.get('/weapons/:weapon_type', (req, res) => {
+  const weapon_type = req.params.weapon_type
+  db.query('SELECT * FROM weapons WHERE weapon_type = ?', [weapon_type], (err, results) => {
+    if (err) {
+      res.status(500).json({ error: err.message});
+    } else {
+      if (results.length > 0) {
+        res.json(results);
+      } else {
+        res.status(404).json({message: 'Weapon type not found'});
       }
       
     } 
