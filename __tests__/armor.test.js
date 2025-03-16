@@ -1,4 +1,3 @@
-// rawMaterials.test.js
 const request = require('supertest');
 const { app, db } = require('../index');
 
