@@ -14,7 +14,7 @@ const db = mysql.createConnection({
 host: process.env.DB_HOST,
 user: process.env.DB_USER,
 password: process.env.DB_PASSWORD,
-database: process.env.DB_DATABASE 
+database: process.env.DB_NAME
 
 });
 
@@ -193,17 +193,17 @@ app.get('/armor', (req, res) => {
   });
 });
 
-// Endpoint to retrieve an armor piece by id
-app.get('/armor/:id', (req, res) => {
-  const armor_id = req.params.id
-  db.query('SELECT * FROM armor WHERE armor_id = ?', [armor_id], (err, results) => {
+// Endpoint to retrieve an armor pieces by slot
+app.get('/armor/:slot', (req, res) => {
+  const slot = req.params.slot
+  db.query('SELECT * FROM armor WHERE armor.slot = ?', [slot], (err, results) => {
     if (err) {
       res.status(500).json({ error: err.message});
     } else {
       if (results.length > 0) {
         res.json(results);
       } else {
-        res.status(404).json({message: 'Armor piece not found'});
+        res.status(404).json({message: 'Armor slot not found'});
       }
       
     } 
@@ -211,14 +211,14 @@ app.get('/armor/:id', (req, res) => {
 });
 
 
-
 // 
-// Weapons endpoints
+// implant endpoints
 // 
 
-// Endpoint to retrieve all weapons
-app.get('/weapons', (req, res) => {
-  db.query('SELECT * FROM  weapons', (err, results) => {
+
+// Endpoint to retrieve all implants
+app.get('/implants', (req, res) => {
+  db.query('SELECT * FROM  implants', (err, results) => {
       if (err) {
           res.status(500).json({ error: err.message });
       } else {
@@ -228,10 +228,19 @@ app.get('/weapons', (req, res) => {
 });
 
 
+
+// 
+// Weapons endpoints
+// 
+
+
+
+
 // Endpoint to retrieve a weapon by id or type
 
 app.get('/weapons/:id', (req, res) => {
   const id = req.params.id
+  // (isNaN(id)) Checks if a value passed to endpoint is a string. If not, it's treated as a weapon_id.
   if (isNaN(id)) {
    const weapon_type = id;
     db.query('SELECT * FROM weapons WHERE weapon_type = ?', [weapon_type], (err, results) => {
@@ -261,6 +270,51 @@ app.get('/weapons/:id', (req, res) => {
       } 
   });
 }
+});
+
+// Endpoint to retrieve all weapons
+app.get('/weapons', (req, res) => {
+  db.query('SELECT * FROM  weapons', (err, results) => {
+      if (err) {
+          res.status(500).json({ error: err.message });
+      } else {
+          res.json(results);
+      }
+  });
+});
+
+
+// 
+// Food endpoints 
+// 
+
+
+// Endpoint to retrieve all food items
+app.get('/food', (req, res) => {
+  db.query('SELECT * FROM  food', (err, results) => {
+      if (err) {
+          res.status(500).json({ error: err.message });
+      } else {
+          res.json(results);
+      }
+  });
+});
+
+
+// 
+// Meds endpoints 
+// 
+
+
+// Endpoint to retrieve all meds
+app.get('/meds', (req, res) => {
+  db.query('SELECT * FROM  meds', (err, results) => {
+      if (err) {
+          res.status(500).json({ error: err.message });
+      } else {
+          res.json(results);
+      }
+  });
 });
 
 module.exports = {app, db};
