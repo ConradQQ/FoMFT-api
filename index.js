@@ -31,7 +31,7 @@ db.connect((err) => {
 if (process.env.NODE_ENV !== 'test') {
   
 app.listen(port, () => {
-  console.log(`Server listening at http://localhost:${port}`);
+  console.log(`Server listening at https://fomft-api-1.onrender.com:${port}`);
 });
 
 }
