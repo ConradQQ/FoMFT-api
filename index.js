@@ -307,8 +307,24 @@ app.get('/food', (req, res) => {
 
 
 // Endpoint to retrieve all meds
-app.get('/meds', (req, res) => {
-  db.query('SELECT * FROM  meds', (err, results) => {
+app.get('/Meds', (req, res) => {
+  db.query('SELECT * FROM  Meds', (err, results) => {
+      if (err) {
+          res.status(500).json({ error: err.message });
+      } else {
+          res.json(results);
+      }
+  });
+});
+
+// 
+// boosters endpoints 
+// 
+
+
+// Endpoint to retrieve all boosters
+app.get('/boosters', (req, res) => {
+  db.query('SELECT * FROM  boosters', (err, results) => {
       if (err) {
           res.status(500).json({ error: err.message });
       } else {
