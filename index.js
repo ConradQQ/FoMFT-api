@@ -7,14 +7,15 @@ dotenv.config()
 
 const app = express();
 app.use(cors());
-const port = 3306;
+const port = process.env.PORT || 8080;
 
 const db = mysql.createConnection({
 
 host: process.env.DB_HOST,
 user: process.env.DB_USER,
 password: process.env.DB_PASSWORD,
-database: process.env.DB_NAME
+database: process.env.DB_NAME,
+port: 3306,
 
 });
 
@@ -31,7 +32,7 @@ db.connect((err) => {
 if (process.env.NODE_ENV !== 'test') {
   
 app.listen(port, () => {
-  console.log(`Server listening at https://fomft-api-1.onrender.com:${port}`);
+  console.log(`Server listening at http://localhost:${port}`);
 });
 
 }
