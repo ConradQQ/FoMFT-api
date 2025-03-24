@@ -187,9 +187,9 @@ app.get('/production_components/:id', (req, res) => {
 // Endpoint to retrieve all armor pieces
 app.get('/armor', async (req, res) => {
   try {
-    const connection = await pool.getConnection(); // Get a connection from the pool
-    const [rows] = await connection.query('SELECT * FROM armor'); // Execute query
-    connection.release(); // Release the connection back to the pool
+    const connection = await pool.getConnection(); 
+    const [rows] = await connection.query('SELECT * FROM armor'); 
+    connection.release(); 
     res.json(rows);
   } catch (err) {
     console.error(err);
@@ -201,9 +201,9 @@ app.get('/armor', async (req, res) => {
 app.get('/armor/:slot', async (req, res) => {
   try {
     const slot = req.params.slot;
-    const connection = await pool.getConnection(); // Get a connection from the pool
-    const [rows] = await connection.query('SELECT * FROM armor WHERE armor.slot = ?', [slot]); // Execute query
-    connection.release(); // Release the connection back to the pool
+    const connection = await pool.getConnection(); 
+    const [rows] = await connection.query('SELECT * FROM armor WHERE armor.slot = ?', [slot]); 
+    connection.release(); 
 
     if (rows.length > 0) {
       res.json(rows);
@@ -247,7 +247,7 @@ app.get('/implants', (req, res) => {
 app.get('/weapons/:id', async (req, res) => {
   try {
     const id = req.params.id;
-    const connection = await pool.getConnection(); // Get a connection from the pool
+    const connection = await pool.getConnection(); 
 
     let query;
     let params;
@@ -263,8 +263,8 @@ app.get('/weapons/:id', async (req, res) => {
       message = 'Weapon not found';
     }
 
-    const [rows] = await connection.query(query, params); // Execute query
-    connection.release(); // Release the connection back to the pool
+    const [rows] = await connection.query(query, params); 
+    connection.release(); 
 
     if (rows.length > 0) {
       res.json(rows);
@@ -280,9 +280,9 @@ app.get('/weapons/:id', async (req, res) => {
 // Endpoint to retrieve all weapons
 app.get('/weapons', async (req, res) => {
   try {
-    const connection = await pool.getConnection(); // Get a connection from the pool
-    const [rows] = await connection.query('SELECT * FROM weapons'); // Execute query
-    connection.release(); // Release the connection back to the pool
+    const connection = await pool.getConnection(); 
+    const [rows] = await connection.query('SELECT * FROM weapons'); 
+    connection.release(); 
     res.json(rows);
   } catch (err) {
     console.error(err);
