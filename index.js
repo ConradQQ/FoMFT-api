@@ -223,16 +223,17 @@ app.get('/armor/:slot', async (req, res) => {
 
 
 // Endpoint to retrieve all implants
-app.get('/implants', (req, res) => {
-  db.query('SELECT * FROM  implants', (err, results) => {
-      if (err) {
-          res.status(500).json({ error: err.message });
-      } else {
-          res.json(results);
-      }
-  });
+app.get('/implants', async (req, res) => {
+  try {
+    const connection = await pool.getConnection(); 
+    const [rows] = await connection.query('SELECT * FROM implants'); 
+    connection.release(); 
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
 });
-
 
 
 // 
