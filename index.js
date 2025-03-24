@@ -9,7 +9,7 @@ const app = express();
 app.use(cors());
 const port = process.env.PORT || 8080;
 
-const poll = mysql.createPool({
+const pool = mysql.createPool({
 
 host: process.env.DB_HOST,
 user: process.env.DB_USER,
@@ -20,7 +20,7 @@ connectionLimit: 10,
 
 });
 
-db.connect((err) => {
+pool.getConnection((err) => {
 
   if (err) {
     console.error(`Connection Failed: ${err.stack}`);
