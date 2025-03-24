@@ -198,20 +198,22 @@ app.get('/armor', async (req, res) => {
 });
 
 // Endpoint to retrieve an armor pieces by slot
-app.get('/armor/:slot', (req, res) => {
-  const slot = req.params.slot
-  db.query('SELECT * FROM armor WHERE armor.slot = ?', [slot], (err, results) => {
-    if (err) {
-      res.status(500).json({ error: err.message});
+app.get('/armor/:slot', async (req, res) => {
+  try {
+    const slot = req.params.slot;
+    const connection = await pool.getConnection(); // Get a connection from the pool
+    const [rows] = await connection.query('SELECT * FROM armor WHERE armor.slot = ?', [slot]); // Execute query
+    connection.release(); // Release the connection back to the pool
+
+    if (rows.length > 0) {
+      res.json(rows);
     } else {
-      if (results.length > 0) {
-        res.json(results);
-      } else {
-        res.status(404).json({message: 'Armor slot not found'});
-      }
-      
-    } 
-  });
+      res.status(404).json({ message: 'Armor slot not found' });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
 });
 
 
