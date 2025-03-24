@@ -9,13 +9,14 @@ const app = express();
 app.use(cors());
 const port = process.env.PORT || 8080;
 
-const db = mysql.createConnection({
+const poll = mysql.createPool({
 
 host: process.env.DB_HOST,
 user: process.env.DB_USER,
 password: process.env.DB_PASSWORD,
 database: process.env.DB_NAME,
 port: 3306,
+connectionLimit: 10,
 
 });
 
@@ -184,14 +185,16 @@ app.get('/production_components/:id', (req, res) => {
 
 
 // Endpoint to retrieve all armor pieces
-app.get('/armor', (req, res) => {
-  db.query('SELECT * FROM  armor', (err, results) => {
-      if (err) {
-          res.status(500).json({ error: err.message });
-      } else {
-          res.json(results);
-      }
-  });
+app.get('/armor', async (req, res) => {
+  try {
+    const connection = await pool.getConnection(); // Get a connection from the pool
+    const [rows] = await connection.query('SELECT * FROM armor'); // Execute query
+    connection.release(); // Release the connection back to the pool
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // Endpoint to retrieve an armor pieces by slot
