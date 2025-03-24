@@ -244,49 +244,50 @@ app.get('/implants', (req, res) => {
 
 // Endpoint to retrieve a weapon by id or type
 
-app.get('/weapons/:id', (req, res) => {
-  const id = req.params.id
-  // (isNaN(id)) Checks if a value passed to endpoint is a string. If not, it's treated as a weapon_id.
-  if (isNaN(id)) {
-   const weapon_type = id;
-    db.query('SELECT * FROM weapons WHERE weapon_type = ?', [weapon_type], (err, results) => {
-      if (err) {
-       res.status(500).json({ error: err.message});
-      } else {
-        if (results.length > 0) {
-        res.json(results);
-        } else {
-          res.status(404).json({message: 'Weapon type not found'});
-       }
-      
-      } 
-   });
-} else {
-    const weapon_id = id;
-    db.query('SELECT * FROM weapons WHERE weapon_id = ?', [weapon_id], (err, results) => {
-      if (err) {
-        res.status(500).json({ error: err.message});
-      } else {
-        if (results.length > 0) {
-          res.json(results);
-        } else {
-          res.status(404).json({message: 'Weapon not found'});
-        }
-        
-      } 
-  });
-}
+app.get('/weapons/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    const connection = await pool.getConnection(); // Get a connection from the pool
+
+    let query;
+    let params;
+    let message;
+
+    if (isNaN(id)) {
+      query = 'SELECT * FROM weapons WHERE weapon_type = ?';
+      params = [id];
+      message = 'Weapon type not found';
+    } else {
+      query = 'SELECT * FROM weapons WHERE weapon_id = ?';
+      params = [id];
+      message = 'Weapon not found';
+    }
+
+    const [rows] = await connection.query(query, params); // Execute query
+    connection.release(); // Release the connection back to the pool
+
+    if (rows.length > 0) {
+      res.json(rows);
+    } else {
+      res.status(404).json({ message: message });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // Endpoint to retrieve all weapons
-app.get('/weapons', (req, res) => {
-  db.query('SELECT * FROM  weapons', (err, results) => {
-      if (err) {
-          res.status(500).json({ error: err.message });
-      } else {
-          res.json(results);
-      }
-  });
+app.get('/weapons', async (req, res) => {
+  try {
+    const connection = await pool.getConnection(); // Get a connection from the pool
+    const [rows] = await connection.query('SELECT * FROM weapons'); // Execute query
+    connection.release(); // Release the connection back to the pool
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
 });
 
 
@@ -296,14 +297,16 @@ app.get('/weapons', (req, res) => {
 
 
 // Endpoint to retrieve all food items
-app.get('/food', (req, res) => {
-  db.query('SELECT * FROM  food', (err, results) => {
-      if (err) {
-          res.status(500).json({ error: err.message });
-      } else {
-          res.json(results);
-      }
-  });
+app.get('/food', async (req, res) => {
+  try {
+    const connection = await pool.getConnection(); // Get a connection from the pool
+    const [rows] = await connection.query('SELECT * FROM food'); // Execute query
+    connection.release(); // Release the connection back to the pool
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
 });
 
 
@@ -313,14 +316,16 @@ app.get('/food', (req, res) => {
 
 
 // Endpoint to retrieve all meds
-app.get('/Meds', (req, res) => {
-  db.query('SELECT * FROM  Meds', (err, results) => {
-      if (err) {
-          res.status(500).json({ error: err.message });
-      } else {
-          res.json(results);
-      }
-  });
+app.get('/Meds', async (req, res) => {
+  try {
+    const connection = await pool.getConnection(); // Get a connection from the pool
+    const [rows] = await connection.query('SELECT * FROM Meds'); // Execute query
+    connection.release(); // Release the connection back to the pool
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // 
@@ -329,14 +334,16 @@ app.get('/Meds', (req, res) => {
 
 
 // Endpoint to retrieve all boosters
-app.get('/boosters', (req, res) => {
-  db.query('SELECT * FROM  boosters', (err, results) => {
-      if (err) {
-          res.status(500).json({ error: err.message });
-      } else {
-          res.json(results);
-      }
-  });
+app.get('/boosters', async (req, res) => {
+  try {
+    const connection = await pool.getConnection(); // Get a connection from the pool
+    const [rows] = await connection.query('SELECT * FROM boosters'); // Execute query
+    connection.release(); // Release the connection back to the pool
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
 });
 
 module.exports = {app, pool};
