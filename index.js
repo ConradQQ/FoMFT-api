@@ -218,7 +218,7 @@ app.get('/armor/:slot', async (req, res) => {
 
 
 // 
-// implant endpoints
+// implant endpointz
 // 
 
 
